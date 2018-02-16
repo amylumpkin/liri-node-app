@@ -12,7 +12,16 @@ let userFunction = process.argv[2];
 let userFunction3 = process.argv[3];
 
 // -----------------  TWITTER  ----------------------------
+// i created this function to display an error message if incorrect format is used, but it displays when i search for movies and songs too.
+/*  switch (userFunction) {
+      case "my-tweets":
+      myTweets();
+      break;
+      default:
+      console.log("not a valid format, ask for 'my-tweets'");
+*/
 
+// function myTweets() {}
 if (userFunction === "my-tweets"){
   var params = {screen_name: 'ClicketyClyde', count:20};
   client.get('statuses/user_timeline', params, function(error, tweets, response) {
@@ -45,7 +54,7 @@ if (userFunction === "spotify-this-song"){
 //-----------------------  OMDB ------------------------------------
 
 if (userFunction === "movie-this"){
-if (userFunction === "Mr. Nobody") {
+ if (userFunction === "Mr. Nobody") {
     //userFunction3 = "Mr. Nobody";
   }
 
