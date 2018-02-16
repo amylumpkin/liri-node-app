@@ -1,43 +1,67 @@
 require("dotenv").config();
+const Twitter = require('twitter');
+const Spotify = require('node-spotify-api');
+const request = require('request');
+const fs = require('fs');
+
 const keys = require("./keys.js");
-const request = require("request");
-const Twitter = require("twitter");
-const Spotify = require("node-spotify-api");
-const fs = require("fs");
-
-const client = new Twitter(keys.twitter);
 const spotify = new Spotify(keys.spotify);
-  //console.log(client);
+const client = new Twitter(keys.twitter)
 
-//var liriSays = process.argv; //an attribute on an object
-  //console.log(liriSays);
+let userFunction = process.argv[2];
+let userFunction3 = process.argv[3];
 
-var userFunction = process.argv[2];
-  //console.log(userFunction);
+// -----------------  TWITTER  ----------------------------
 
-//----------TWITTER--------------------------
-switch (userFunction) {
-  case "my-tweets":
-  myTweets();
-  break;
-default:
-  console.log("not a valid format, ask for 'my-tweets'");
+if (userFunction === "my-tweets"){
+  var params = {screen_name: 'ClicketyClyde', count:20};
+  client.get('statuses/user_timeline', params, function(error, tweets, response) {
+    if (!error) {
+      console.log("Your last 20 tweets: ");
+      tweets.forEach(p => console.log(`@${p.user.screen_name}: ${p.text} @ ${p.created_at}`));
+    }
+  });
 }
-// still need them to show when they were created.
-//this is a function, only call in the case of 'my-tweets'
-function myTweets(){
-  if (userFunction === "my-tweets"){
-  var params = {screen_name: 'ClicketyClyde', count: 20};
-    client.get('statuses/user_timeline', params, function(error, tweets, response) {
-      if (!error) {
-        console.log("These are your last 20 tweets: ");
-        tweets.forEach(p => console.log(`@${p.user.screen_name}: ${p.text} @ ${p.created_at}`));
-      }
-    });
+
+
+//---------------------  SPOTIFY ------------------------------
+
+if (userFunction === "spotify-this-song"){
+  if (userFunction3 === undefined) {
+    console.log("We'll choose a song for you!")
+    userFunction3 = "The Sign";
+  };
+  spotify.search({ type:'track', query: userFunction3, market:"us", limit:1 }, function(err, data) {
+    if (err) {
+      return console.log('Error occurred: ' + err);
+    }
+    console.log(JSON.stringify(data.tracks.items[0].artists[0].name, null, 2));
+    console.log(JSON.stringify(data.tracks.items[0].name, null, 2));
+    console.log(JSON.stringify(data.tracks.items[0].external_urls.spotify, null, 2));
+    console.log(JSON.stringify(data.tracks.items[0].album.name, null, 2));
+  });
+}
+
+//-----------------------  OMDB ------------------------------------
+
+if (userFunction === "movie-this"){
+if (userFunction === "Mr. Nobody") {
+    //userFunction3 = "Mr. Nobody";
   }
 
-//--------------SPOTIFY----------------------------
-// need a command for 'spotify-this-song'
-// node liri.js spotify-this-song '<song name here>'
-// command will display 4 properties
-// if no song is provided then have a default song
+    request(`http://www.omdbapi.com/?t=${userFunction3}&apikey=trilogy`, function (err, response, body) {
+        console.log(JSON.parse(body).Ratings.length);
+        if (!err && response.statusCode === 200) {
+              console.log(`${userFunction3} info:
+              Title: ${JSON.parse(body).Title}
+              year: ${JSON.parse(body).Year}
+              IMDB Rating: ${JSON.parse(body).imdbRating}
+              Country: ${JSON.parse(body).Country}
+              Language: ${JSON.parse(body).Language}
+              Plot: ${JSON.parse(body).Plot}
+              Actors: ${JSON.parse(body).Actors}  `);
+        };
+     })
+}
+
+// ------------------ DO WHAT IT SAYS -----------------------------
