@@ -13,15 +13,24 @@ let userFunction3 = process.argv[3];
 
 // -----------------  TWITTER  ----------------------------
 // i created this function to display an error message if incorrect format is used, but it displays when i search for movies and songs too.
-/*  switch (userFunction) {
-      case "my-tweets":
+  switch (userFunction) {
+      case "my-tweets": {
       myTweets();
       break;
+    }
+      case "spotify-this-song": {
+      mySpotify();
+      break;
+    }
+      case "movie-this":{
+      myMovies();
+      break;
+      }
       default:
-      console.log("not a valid format, ask for 'my-tweets'");
-*/
+      console.log("not a valid format");
+}
 
-// function myTweets() {}
+ function myTweets() {
 if (userFunction === "my-tweets"){
   var params = {screen_name: 'ClicketyClyde', count:20};
   client.get('statuses/user_timeline', params, function(error, tweets, response) {
@@ -31,15 +40,16 @@ if (userFunction === "my-tweets"){
     }
   });
 }
-
+}
 
 //---------------------  SPOTIFY ------------------------------
 
+function mySpotify(){
 if (userFunction === "spotify-this-song"){
-  if (userFunction3 === undefined) {
-    console.log("We'll choose a song for you!")
-    userFunction3 = "The Sign";
-  };
+//  if (userFunction3 === undefined) {
+  //  console.log("We'll choose a song for you!")
+//    userFunction3 = "The Sign";
+
   spotify.search({ type:'track', query: userFunction3, market:"us", limit:1 }, function(err, data) {
     if (err) {
       return console.log('Error occurred: ' + err);
@@ -50,16 +60,16 @@ if (userFunction === "spotify-this-song"){
     console.log(JSON.stringify(data.tracks.items[0].album.name, null, 2));
   });
 }
-
+}
 //-----------------------  OMDB ------------------------------------
-
+function myMovies(){
 if (userFunction === "movie-this"){
- if (userFunction === "Mr. Nobody") {
+// if (userFunction === "Mr. Nobody") {
     //userFunction3 = "Mr. Nobody";
-  }
+//  }
 
     request(`http://www.omdbapi.com/?t=${userFunction3}&apikey=trilogy`, function (err, response, body) {
-        console.log(JSON.parse(body).Ratings.length);
+      //  console.log(JSON.parse(body).Ratings.length);
         if (!err && response.statusCode === 200) {
               console.log(`${userFunction3} info:
               Title: ${JSON.parse(body).Title}
@@ -72,5 +82,5 @@ if (userFunction === "movie-this"){
         };
      })
 }
-
+}
 // ------------------ DO WHAT IT SAYS -----------------------------
