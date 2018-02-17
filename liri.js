@@ -12,7 +12,7 @@ let userFunction = process.argv[2];
 let userFunction3 = process.argv[3];
 
 // -----------------  TWITTER  ----------------------------
-// i created this function to display an error message if incorrect format is used, but it displays when i search for movies and songs too.
+
   switch (userFunction) {
       case "my-tweets": {
       myTweets();
