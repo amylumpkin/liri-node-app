@@ -13,15 +13,15 @@ LIRI (Language Interpretation and Recognition Interface) is a command line node 
 ## To run the app:
 * To return my latest Tweets, type the following into the command line:
 
-   node liri.js my-tweets
+   `node liri.js my-tweets`
 
 * To return data about a song, type the following into the command line:
 
-   node liri.js spotify-this-song "name of song here"   
+   `node liri.js spotify-this-song "name of song here"`   
 
 * Finally, to return data about a movie, type the following into command line:
 
-   node liri.js movie-this "name of movie here" 
-    
+   `node liri.js movie-this "name of movie here"` 
+
 
    
